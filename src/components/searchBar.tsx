@@ -1,30 +1,35 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { StyleSheet, TextInput, View, TouchableOpacity, Text } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { search } from "../assets/svgs";
+import { clear, search } from "../assets/svgs";
 import { useFocusEffect } from "@react-navigation/native";
 
-const SearchBar = ({ onSearch, onFocusChange }) => {
-  const [city, setCity] = useState("");
+interface SearchBarProps {
+  onSearch: (text: string) => void;
+  onFocusChange: (isFocused: boolean) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onFocusChange }) => {
+  const [city, setCity] = useState<string>("");
+
+  const clearSearch = useCallback(() => {
+    setCity("");
+    onSearch("");
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
-      return () => clearSearch()
+      return () => clearSearch();
     }, [])
   );
 
-  const clearSearch = () => {
-    setCity("");
-    onSearch(""); 
-  };
-
   return (
     <View style={styles.searchContainer}>
-        <SvgXml width={20} height={20} xml={search} />
+      <SvgXml width={20} height={20} xml={search} />
       <TextInput
         style={styles.input}
         placeholder="Enter city name"
-        placeholderTextColor={'rgba(0,0,0,0.7)'}
+        placeholderTextColor="rgba(0,0,0,0.7)"
         value={city}
         onFocus={() => onFocusChange(true)}
         onChangeText={(text) => {
@@ -34,7 +39,7 @@ const SearchBar = ({ onSearch, onFocusChange }) => {
       />
       {city.length > 0 && (
         <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
-          <Text style={styles.clearText}>✖</Text>
+          <SvgXml width={20} height={20} xml={clear} />
         </TouchableOpacity>
       )}
     </View>
@@ -45,12 +50,12 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width:'80%',
+    width: "84%",
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginBottom: 10,
-    backgroundColor:'white'
+    backgroundColor: "white",
   },
   input: {
     flex: 1,

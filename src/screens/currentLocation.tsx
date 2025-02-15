@@ -16,6 +16,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {humidity, temperature, wind} from '../assets/svgs';
 import WeatherDetailCard from '../components/weatherDetailCard';
+import * as Animatable from 'react-native-animatable';
 import {darkTheme, lightTheme} from '../utils/theme';
 import Header from '../components/header';
 
@@ -85,7 +86,7 @@ const CurrentLocation = ({navigation}) => {
     <>
       <View style={[styles.header, {backgroundColor: themeStyles.background}]}>
         <Header
-          left={'45%'}
+          left={'30%'}
           title={'Current Location'}
           onPress={() => navigation.goBack()}
         />
@@ -110,7 +111,7 @@ const CurrentLocation = ({navigation}) => {
             </Text>
           </View>
 
-          <View style={styles.card}>
+          <Animatable.View duration={1000} animation={!loading?'fadeInUp':''} style={styles.card}>
             <WeatherDetailCard
               icon={temperature}
               label="Temperature: "
@@ -128,7 +129,7 @@ const CurrentLocation = ({navigation}) => {
               label="Humidity: "
               value={`${weather?.humidity}%`}
             />
-          </View>
+          </Animatable.View>
         </ScrollView>
       </LinearGradient>
     </>

@@ -90,9 +90,15 @@ const SearchedCities = ({navigation}) => {
     </Animatable.View>
   );
 
+  const renderEmptyComponent = () => (
+    <Animatable.View duration={1000} animation={screenFocus ? 'fadeInUp' : ''}>
+      <ListEmptyComponent txt={'No Recent Searches!'} />
+    </Animatable.View>
+  );
+
   return (
     <LinearGradient colors={themeStyles.gradient} style={styles.container}>
-      <Header left={'50%'} title={'Dashboard'} onPress={handleBackPress} />
+      <Header left={'40%'} title={'Dashboard'} onPress={handleBackPress} />
       <View style={styles.searchContainer}>
         <SearchBar
           onSearch={txt => {
@@ -141,12 +147,10 @@ const SearchedCities = ({navigation}) => {
             <Text style={styles.header}>Recently Searched</Text>
             <FlatList
               showsVerticalScrollIndicator={false}
-              ListEmptyComponent={
-                <ListEmptyComponent txt={'No Recent Searches!'} />
-              }
+              ListEmptyComponent={renderEmptyComponent}
               contentContainerStyle={styles.flatlistContainer}
               data={searchedCities}
-              initialNumToRender={5}  
+              initialNumToRender={5}
               maxToRenderPerBatch={5}
               getItemLayout={(item, index) => ({
                 length: 70,
