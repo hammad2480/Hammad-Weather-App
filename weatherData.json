@@ -1,0 +1,10 @@
+{
+  "weatherData": [
+    { "city": "New York", "temperature": 18, "weather": "Cloudy", "humidity": 65, "windSpeed": 10 },
+    { "city": "London", "temperature": 12, "weather": "Rainy", "humidity": 80, "windSpeed": 15 },
+    { "city": "Dubai", "temperature": 35, "weather": "Sunny", "humidity": 20, "windSpeed": 5 },
+    { "city": "Paris", "temperature": 14, "weather": "Cloudy", "humidity": 70, "windSpeed": 12 },
+    { "city": "Tokyo", "temperature": 22, "weather": "Rainy", "humidity": 75, "windSpeed": 18 },
+    { "city": "Los Angeles", "temperature": 28, "weather": "Sunny", "humidity": 30, "windSpeed": 8 }
+  ]
+}
