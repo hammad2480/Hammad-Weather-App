@@ -16,12 +16,19 @@ import {getAnimationSource} from '../utils/functions';
 import * as Animatable from 'react-native-animatable';
 import {darkTheme, lightTheme} from '../utils/theme';
 import Header from '../components/header';
+import SuccessModal from '../components/Modal';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const WeatherDetails = ({route, navigation}) => {
   const width = Dimensions.get('window').width;
   const unit = useSelector(state => state.temperature.unit);
   const theme = useSelector(state => state.theme.mode);
   const [animation, setAnimation] = useState(false);
+  const [screenFocus, setScreenFocus] = useState(false);
+  const [modal,setModal] = useState(false)
+  const [modalTxt,setModalTxt] = useState('')
+  
   const themeStyles = theme === 'dark' ? darkTheme : lightTheme;
   const {cityData} = route.params;
   const dispatch = useDispatch();
@@ -34,19 +41,33 @@ const WeatherDetails = ({route, navigation}) => {
     return unit === 'F' ? (temp * 9) / 5 + 32 : temp;
   }, []);
 
+    useFocusEffect(
+      useCallback(() => {
+        setScreenFocus(true);
+        setTimeout(() => {
+          setScreenFocus(false);
+        }, 1000);
+      }, []),
+    );
+
   const handleFav = useCallback(() => {
     setAnimation(true);
     setTimeout(() => {
       setAnimation(false);
       dispatch(toggleFavorite(cityData));
     }, 1000);
-  }, []);
+    setModalTxt(`Favorite ${isFavorite?'removed':'added'} successfully!`)
+    setModal(true)
+    setTimeout(() => {
+      setModal(false)
+    }, 1000);
+  }, [isFavorite]);
 
   return (
     <LinearGradient colors={themeStyles.gradient} style={styles.mainContainer}>
       <View style={styles.header}>
         <Header
-          left={width / 2.1}
+          left={width / 3}
           title={'Weather'}
           onPress={() => navigation.goBack()}
         />
@@ -68,7 +89,7 @@ const WeatherDetails = ({route, navigation}) => {
         />
         <Text style={styles.city}>{cityData.city}</Text>
       </View>
-      <View style={styles.card}>
+      <Animatable.View duration={1000} animation={screenFocus?'fadeInUp':''} style={styles.card}>
         <WeatherDetailCard
           icon={temperature}
           label="Temperature: "
@@ -86,7 +107,8 @@ const WeatherDetails = ({route, navigation}) => {
           label="Humidity: "
           value={`${cityData.humidity}%`}
         />
-      </View>
+      </Animatable.View>
+      <SuccessModal visible={modal} text={modalTxt} onClose={()=>setModal(false)}/>
     </LinearGradient>
   );
 };

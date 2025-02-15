@@ -1,13 +1,19 @@
 import React, { memo } from 'react';
-import {View, Text, StyleSheet,Dimensions} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 import { weather } from '../assets/svgs';
 
-const height = Dimensions.get('screen').height
-const ListEmptyComponent = ({txt, isSmallList}) => (
+const height = Dimensions.get('screen').height;
+
+interface ListEmptyComponentProps {
+  txt: string;
+  isSmallList?: boolean;
+}
+
+const ListEmptyComponent: React.FC<ListEmptyComponentProps> = ({ txt, isSmallList = false }) => (
   <View style={styles.emptyContainer}>
     <SvgXml
-    xml={weather}
+      xml={weather}
       width={isSmallList ? 100 : 200}
       height={isSmallList ? 100 : 200}
     />
@@ -18,12 +24,12 @@ const ListEmptyComponent = ({txt, isSmallList}) => (
 const styles = StyleSheet.create({
   emptyContainer: {
     alignItems: 'center',
-    marginTop:height/6
+    marginTop: height / 6,
   },
   emptyText: {
     fontSize: 22,
     color: 'white',
-    fontFamily:'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
 });
 

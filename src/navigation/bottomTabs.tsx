@@ -1,7 +1,7 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SvgXml} from 'react-native-svg';
-import { favorite, heartWhite, location, search, searchWhite } from '../assets/svgs';
+import { heartWhite, location, searchWhite } from '../assets/svgs';
 import CurrentLocation from '../screens/currentLocation';
 import { darkTheme, lightTheme } from '../utils/theme';
 import { useSelector } from 'react-redux';

@@ -9,6 +9,7 @@ import {darkTheme, lightTheme} from '../utils/theme';
 import {useFocusEffect} from '@react-navigation/native';
 import ListEmptyComponent from '../components/listEmptyComponent';
 import Header from '../components/header';
+import SuccessModal from '../components/Modal';
 
 const Favorites = ({navigation}) => {
   const theme = useSelector(state => state.theme.mode);
@@ -17,6 +18,8 @@ const Favorites = ({navigation}) => {
   const dispatch = useDispatch();
   const [removeItem, setRemoveItem] = useState(null);
   const [screenFocus, setScreenFocus] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalTxt, setModalTxt] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -29,11 +32,15 @@ const Favorites = ({navigation}) => {
 
   const RemoveFavorite = useCallback(item => {
     setRemoveItem(item.city);
-
     setTimeout(() => {
       dispatch(toggleFavorite(item));
       setRemoveItem(null);
     }, 500);
+    setModalTxt('Favorite removed successfully!');
+    setModal(true);
+    setTimeout(() => {
+      setModal(false);
+    }, 1000);
   }, []);
 
   const renderItem = useMemo(() => {
@@ -57,16 +64,24 @@ const Favorites = ({navigation}) => {
     );
   }, [screenFocus, removeItem, navigation, RemoveFavorite]);
 
+  const renderEmptyComponent = () => (
+    <Animatable.View duration={1000} animation={screenFocus ? 'fadeInUp' : ''}>
+      <ListEmptyComponent txt={'No favorites found!'} />
+    </Animatable.View>
+  );
+
   return (
     <LinearGradient colors={themeStyles.gradient} style={styles.container}>
       <Header
-        left={'58%'}
+        left={'42%'}
         title={'Favorites'}
         onPress={() => navigation.goBack()}
       />
       <FlatList
         data={favorites}
-        ListEmptyComponent={<ListEmptyComponent txt={'No favorites Found!'} />}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.flatlistContainer}
+        ListEmptyComponent={renderEmptyComponent}
         keyExtractor={item => item.city}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
@@ -76,6 +91,11 @@ const Favorites = ({navigation}) => {
           index,
         })}
         renderItem={renderItem}
+      />
+      <SuccessModal
+        visible={modal}
+        onClose={() => setModal(false)}
+        text={modalTxt}
       />
     </LinearGradient>
   );
@@ -88,6 +108,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     color: 'white',
+  },
+  flatlistContainer: {
+    paddingTop: 10,
+    paddingBottom: '20%',
   },
   noFavorites: {
     textAlign: 'center',
