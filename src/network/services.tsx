@@ -2,7 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from './helperService';
 import {PermissionsAndroid, Platform, Alert} from 'react-native';
 import axios from 'axios';
-const API_KEY = '11c5edc2c2dd46b5d2e7b4384e4f9a14';
+import {API_KEY, WEATHER_URI} from '@env'
+
 
 export const fetchWeather = async cityName => {
   try {
@@ -19,11 +20,11 @@ export const fetchWeather = async cityName => {
 
 export const fetchLiveWeather = async (lat, lon) => {
   try {
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+    const response = await axios.get(WEATHER_URI, {
       params: {
         lat,
         lon,
-        appid: API_KEY,
+        appid:API_KEY
       },
     });
 
