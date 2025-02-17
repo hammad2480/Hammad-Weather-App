@@ -9,7 +9,7 @@ import {darkTheme, lightTheme} from '../utils/theme';
 import {useFocusEffect} from '@react-navigation/native';
 import ListEmptyComponent from '../components/listEmptyComponent';
 import Header from '../components/header';
-import SuccessModal from '../components/Modal';
+import SuccessModal from '../components/modal';
 
 const Favorites = ({navigation}) => {
   const theme = useSelector(state => state.theme.mode);
