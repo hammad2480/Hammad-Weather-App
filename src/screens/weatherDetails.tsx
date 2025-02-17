@@ -16,7 +16,7 @@ import {getAnimationSource} from '../utils/functions';
 import * as Animatable from 'react-native-animatable';
 import {darkTheme, lightTheme} from '../utils/theme';
 import Header from '../components/header';
-import SuccessModal from '../components/Modal';
+import SuccessModal from '../components/modal'
 import { useFocusEffect } from '@react-navigation/native';
 
 
@@ -64,6 +64,7 @@ const WeatherDetails = ({route, navigation}) => {
   }, [isFavorite]);
 
   return (
+    <>
     <LinearGradient colors={themeStyles.gradient} style={styles.mainContainer}>
       <View style={styles.header}>
         <Header
@@ -110,6 +111,7 @@ const WeatherDetails = ({route, navigation}) => {
       </Animatable.View>
       <SuccessModal visible={modal} text={modalTxt} onClose={()=>setModal(false)}/>
     </LinearGradient>
+    </>
   );
 };
 
